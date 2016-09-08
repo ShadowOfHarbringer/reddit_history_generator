@@ -51,7 +51,7 @@ echo "\n";
 
 $period = 86400 * 4;
 
-$startdate  = "2015-03-01 00:00:00";
+$startdate  = "2015-05-01 00:00:00";
 $enddate    = "2016-09-04 23:59:59";
 
 $GLOBALS['last_date']   = '0000-00-00 00:00:00';
@@ -90,12 +90,11 @@ do {
     
     echo "Date | From: $dateFrom => To: $dateTo\n";
     echo "$finalRedditUrl\n";
-    $handle = fopen("php://stdin", "r");
-    $char = fgetc($handle);
-    
-    //var_dump(ord($char{0}));
     
     passthru('/usr/bin/firefox "'. $finalRedditUrl.'"');
+
+    $handle = fopen("php://stdin", "r");
+    $char = fgetc($handle);
     
     $currDay++;
 } while($timestampFrom < $endTimeStamp);
