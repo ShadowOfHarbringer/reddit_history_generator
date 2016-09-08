@@ -88,7 +88,7 @@ do {
     $GLOBALS['last_time']   = $timestampFrom;
     $GLOBALS['last_url']    = $finalRedditUrl;
     
-    echo "$finalRedditUrl\n";
+    echo "Date | From: $dateFrom => To: $dateTo\n";
     echo "$finalRedditUrl\n";
     $handle = fopen("php://stdin", "r");
     $char = fgetc($handle);
