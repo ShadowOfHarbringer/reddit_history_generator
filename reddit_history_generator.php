@@ -73,10 +73,13 @@ do {
     $selectedYear = date('Y', $selectedTimestamp);  $selectedMonth = date('m', $selectedTimestamp);     $selectedDay = date('d', $selectedTimestamp);
     $selectedHour = date('G', $selectedTimestamp);  $selectedMinute = date('i', $selectedTimestamp);    $selectedSecond = date('s', $selectedTimestamp);
     
-    $dateFrom       = "$selectedYear-$selectedMonth-$selectedDay 00:00:00";
+    $dateFrom       = "$selectedYear-$selectedMonth-$selectedDay $selectedHour:$selectedMinute:$selectedSecond";
     $timestampFrom  = strtotime($dateFrom);
     
     $timestampTo    = $timestampFrom + $period;
+    $nextYear = date('Y', $timestampTo);  $nextMonth = date('m', $timestampTo);     $nextDay = date('d', $timestampTo);
+    $nextHour = date('G', $timestampTo);  $nextMinute = date('i', $timestampTo);    $nextSecond = date('s', $timestampTo);
+    $dateTo       = "$nextYear-$nextMonth-$nextDay $nextHour:$nextMinute:$nextSecond";
     
     $finalRedditUrl = $subRedditURL0 . "$timestampFrom$subRedditURLbrk$timestampTo$subRedditURL1";
 
@@ -85,6 +88,7 @@ do {
     $GLOBALS['last_time']   = $timestampFrom;
     $GLOBALS['last_url']    = $finalRedditUrl;
     
+    echo "$finalRedditUrl\n";
     echo "$finalRedditUrl\n";
     $handle = fopen("php://stdin", "r");
     $char = fgetc($handle);
