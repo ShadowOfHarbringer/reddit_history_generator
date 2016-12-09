@@ -51,15 +51,25 @@ echo "\n";
 
 $period = 86400 * 4;
 
-$startdate  = "2015-05-01 00:00:00";
-$enddate    = "2016-09-04 23:59:59";
+$startdate  = "2015-08-18 00:00:00";
+$enddate    = "2016-12-04 23:59:59";
 
 $GLOBALS['last_date']   = '0000-00-00 00:00:00';
 $GLOBALS['last_time']   = '0';
 $GLOBALS['last_url']    = '';
 
 
-$subRedditURL0      = 'http://www.reddit.com/r/Bitcoin/search?sort=top&q=timestamp%3A';
+//$subRedditURL0      = array(
+	//'http://www.reddit.com/r/Bitcoin/search?sort=top&q=timestamp%3A',
+//);
+
+$subRedditURL0      = array(
+	'http://www.reddit.com/r/Bitcoin/search?sort=top&q=timestamp%3A',
+	'http://www.reddit.com/r/btc/search?sort=top&q=timestamp%3A',
+	'http://www.reddit.com/r/bitcoinxt/search?sort=top&q=timestamp%3A',
+	'http://www.reddit.com/r/bitcoin_uncensored/search?sort=top&q=timestamp%3A',
+);
+
 $subRedditURL1      = '&restrict_sr=on&syntax=cloudsearch'; 
 $subRedditURLbrk    = '..';
 
@@ -76,23 +86,25 @@ do {
     $dateFrom       = "$selectedYear-$selectedMonth-$selectedDay $selectedHour:$selectedMinute:$selectedSecond";
     $timestampFrom  = strtotime($dateFrom);
     
-    $timestampTo    = $timestampFrom + $period;
+    $timestampTo    = ($timestampFrom + $period) - 1;
     $nextYear = date('Y', $timestampTo);  $nextMonth = date('m', $timestampTo);     $nextDay = date('d', $timestampTo);
     $nextHour = date('G', $timestampTo);  $nextMinute = date('i', $timestampTo);    $nextSecond = date('s', $timestampTo);
     $dateTo       = "$nextYear-$nextMonth-$nextDay $nextHour:$nextMinute:$nextSecond";
     
-    $finalRedditUrl = $subRedditURL0 . "$timestampFrom$subRedditURLbrk$timestampTo$subRedditURL1";
+    foreach ($subRedditURL0 as $uKey => $url0) {
+	$finalRedditUrl = $url0 . "$timestampFrom$subRedditURLbrk$timestampTo$subRedditURL1";
+	
+	$GLOBALS['last_date']   = $dateFrom;
+	$GLOBALS['last_time']   = $timestampFrom;
+	$GLOBALS['last_url']    = $finalRedditUrl;
+	
+	echo "Date | From: $dateFrom => To: $dateTo\n";
+	echo "$finalRedditUrl\n";
+	
+	passthru('/usr/bin/firefox "'. $finalRedditUrl.'"');
 
+    }
     
-    $GLOBALS['last_date']   = $dateFrom;
-    $GLOBALS['last_time']   = $timestampFrom;
-    $GLOBALS['last_url']    = $finalRedditUrl;
-    
-    echo "Date | From: $dateFrom => To: $dateTo\n";
-    echo "$finalRedditUrl\n";
-    
-    passthru('/usr/bin/firefox "'. $finalRedditUrl.'"');
-
     $handle = fopen("php://stdin", "r");
     $char = fgetc($handle);
     
